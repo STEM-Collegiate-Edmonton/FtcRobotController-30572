@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.example_code;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class drivetrain {
     private DcMotor frontLeftDrive = null;
@@ -49,5 +50,12 @@ public class drivetrain {
         frontRightDrive.setPower(frontRightPower);
         backLeftDrive.setPower(backLeftPower);
         backRightDrive.setPower(backRightPower);
+    }
+
+    public drivetrain(HardwareMap hardwareMap) {
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
     }
 }

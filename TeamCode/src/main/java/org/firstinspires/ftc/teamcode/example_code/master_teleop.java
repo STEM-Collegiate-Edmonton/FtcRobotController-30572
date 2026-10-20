@@ -7,10 +7,10 @@ import java.util.Objects;
 
 @TeleOp(name = "example teleop", group = "example")
 public class master_teleop extends OpMode {
-    drivetrain drivetrain = new drivetrain();
-    intake intake = new intake();
-    launcher launcher = new launcher();
-    windmill windmill = new windmill();
+    drivetrain drivetrain = new drivetrain(hardwareMap);
+    intake intake = new intake(hardwareMap);
+    launcher launcher = new launcher(hardwareMap);
+    windmill windmill = new windmill(hardwareMap);
     @Override
     public void init() {
         drivetrain.init();

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.example_code;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 public class launcher {
@@ -29,5 +30,9 @@ public class launcher {
 
     public double get_velocity() {
         return (launcher.getVelocity());
+    }
+
+    public launcher(HardwareMap hardwareMap) {
+        launcher = hardwareMap.get(DcMotorEx.class, "launcher");
     }
 }
