@@ -13,7 +13,6 @@ public class launcher {
 
     public void init() {
         launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(40, 0, 0, 12.5));
     }
 
     public void set_velocity(double velocity) {

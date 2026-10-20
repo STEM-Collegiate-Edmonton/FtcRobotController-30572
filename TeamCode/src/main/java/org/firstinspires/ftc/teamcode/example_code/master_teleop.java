@@ -30,12 +30,12 @@ public class master_teleop extends OpMode {
         telemetry.addData("Lateral", gamepad1.left_stick_x);
         telemetry.addData("Yaw", gamepad1.right_stick_x);
         telemetry.addData("Intake", gamepad1.left_trigger - gamepad1.right_trigger);
-        drivetrain.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        drivetrain.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
         intake.set_power(gamepad1.left_trigger - gamepad1.right_trigger);
         telemetry.addLine("\nLauncher Data");
         if (gamepad1.a && launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
             telemetry.addLine("FIRING");
-            windmill.set_power(1);
+            windmill.set_power(-1);
             intake.set_power(0.5);
         } else {
             windmill.set_power(0);
