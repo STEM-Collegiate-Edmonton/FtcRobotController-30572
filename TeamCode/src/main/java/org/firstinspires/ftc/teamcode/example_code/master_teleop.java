@@ -39,14 +39,25 @@ public class master_teleop extends OpMode {
             intake.set_power(0.5);
         } else {
             windmill.set_power(0);
-            telemetry.addLine("STANDBY");
             }
         if (gamepad1.right_bumper) {
-            telemetry.addLine("ACCELERATING");
-             launcher.spin(true);
+            launcher.spin(true);
+            if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
+                if (gamepad1.a) {
+                    telemetry.addData("Status", "FIRING");
+                } else {
+                    telemetry.addData("Status", "STANDBY");
+                }
+            } else {
+                telemetry.addData("Status", "ACCELERATING");
+            }
         } else {
-            telemetry.addLine("DECELERATING");
             launcher.spin(false);
+            if (launcher.get_velocity() <= 5) {
+                telemetry.addData("Status", "DECELERATING");
+            } else {
+                telemetry.addData("Status", "STATIONARY");
+            }
         }
         telemetry.addData("Velocity", launcher.get_velocity());
         telemetry.update();
