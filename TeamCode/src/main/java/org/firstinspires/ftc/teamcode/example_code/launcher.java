@@ -6,14 +6,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 public class launcher {
-    public final int LAUNCHER_TARGET_VELOCITY = 1250; //2678 RPM
-    public final int LAUNCHER_MIN_VELOCITY = 1200; //2571 RPM
+    public final int LAUNCHER_TARGET_VELOCITY = 1550; //2678 RPM
+    public final int LAUNCHER_MIN_VELOCITY = 1500; //2571 RPM
 
     private DcMotorEx launcher = null;
 
     public void init() {
         launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        launcher.setPower(1);
     }
 
     public void set_velocity(double velocity) {
