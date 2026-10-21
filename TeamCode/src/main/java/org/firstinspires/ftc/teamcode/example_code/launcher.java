@@ -12,7 +12,9 @@ public class launcher {
     private DcMotorEx launcher = null;
 
     public void init() {
+
         launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        launcher.setPower(1);
     }
 
     public void set_velocity(double velocity) {
