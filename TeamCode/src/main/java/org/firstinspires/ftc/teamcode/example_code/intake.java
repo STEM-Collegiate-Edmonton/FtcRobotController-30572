@@ -4,6 +4,7 @@ import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class intake {
@@ -16,6 +17,7 @@ public class intake {
         intake.setZeroPowerBehavior(BRAKE);
         leftIntakeServo.setPower(0);
         rightIntakeServo.setPower(0);
+        leftIntakeServo.setDirection(CRServo.Direction.REVERSE);
     }
 
     public void set_power(double power) {

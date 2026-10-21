@@ -36,7 +36,6 @@ public class master_teleop extends OpMode {
         if (gamepad1.a && launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
             telemetry.addLine("FIRING");
             windmill.set_power(-1);
-            intake.set_power(0.5);
         } else {
             windmill.set_power(0);
             }
