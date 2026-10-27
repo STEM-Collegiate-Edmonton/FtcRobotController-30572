@@ -9,6 +9,7 @@ public class master_teleop extends OpMode {
     intake intake = null;
     launcher launcher = null;
     windmill windmill = null;
+    boolean spin_up;
     @Override
     public void init() {
         drivetrain = new drivetrain(hardwareMap);
@@ -32,6 +33,7 @@ public class master_teleop extends OpMode {
         telemetry.addData("Intake", gamepad1.left_trigger - gamepad1.right_trigger);
         drivetrain.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
         intake.set_power(gamepad1.left_trigger - gamepad1.right_trigger);
+        spin_up = gamepad1.b;
         telemetry.addLine("\nLauncher Data");
         if (gamepad1.a && launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
             telemetry.addLine("FIRING");
@@ -39,7 +41,7 @@ public class master_teleop extends OpMode {
         } else {
             windmill.set_power(0);
             }
-        if (gamepad1.right_bumper) {
+        if (spin_up) {
             launcher.spin(true);
             if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
                 if (gamepad1.a) {
@@ -53,9 +55,9 @@ public class master_teleop extends OpMode {
         } else {
             launcher.spin(false);
             if (launcher.get_velocity() <= 5) {
-                telemetry.addData("Status", "DECELERATING");
-            } else {
                 telemetry.addData("Status", "STATIONARY");
+            } else {
+                telemetry.addData("Status", "DECELERATING");
             }
         }
         telemetry.addData("Velocity", launcher.get_velocity());
