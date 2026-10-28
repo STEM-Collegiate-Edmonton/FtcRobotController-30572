@@ -9,7 +9,7 @@ public class master_teleop extends OpMode {
     intake intake = null;
     launcher launcher = null;
     windmill windmill = null;
-    underglow underglow = null;
+    //underglow underglow = null;
     boolean spin_up;
     @Override
     public void init() {
@@ -17,7 +17,7 @@ public class master_teleop extends OpMode {
         intake = new intake(hardwareMap);
         launcher = new launcher(hardwareMap);
         windmill = new windmill(hardwareMap);
-        underglow = new underglow(hardwareMap);
+        //underglow = new underglow(hardwareMap);
 
         drivetrain.init();
         intake.init();
@@ -30,7 +30,7 @@ public class master_teleop extends OpMode {
 
     @Override
     public void loop(){
-        underglow.update();
+        //underglow.update();
         telemetry.addLine("TeleOp active");
         telemetry.addData("Axial", -gamepad1.left_stick_y);
         telemetry.addData("Lateral", gamepad1.left_stick_x);
