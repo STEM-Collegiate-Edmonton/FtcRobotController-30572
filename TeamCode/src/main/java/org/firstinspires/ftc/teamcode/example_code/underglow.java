@@ -3,9 +3,10 @@ package org.firstinspires.ftc.teamcode.example_code;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
+import org.firstinspires.ftc.teamcode.Prism.GoBildaPrismDriver;
 
 public class underglow {
-    private final I2cDeviceSynch device;
+    GoBildaPrismDriver prism;
 
     // ===== CHANGE THESE TO YOUR HARDWARE =====
     private static final int I2C_ADDRESS = 0x38;   // Example only
@@ -19,31 +20,24 @@ public class underglow {
     private static final double UPDATE_INTERVAL_SECONDS = 0.15; // 150 ms
 
     public underglow(HardwareMap hardwareMap) {
-        device = hardwareMap.get(I2cDeviceSynch.class, "underglow");
-        device.setI2cAddress(I2cAddr.create7bit(I2C_ADDRESS));
-        device.engage();
+        prism = hardwareMap.get(GoBildaPrismDriver.class, "prism");
 
-        // Set a default state
-        setMode(1);
-        setBrightness(0);
-    }
-
-    public void setMode(int mode) {
-        device.write8(REG_MODE, mode & 0xFF);
+//        // Set a default state
+//        setMode(1);
+//        setBrightness(0);
     }
 
     public void setBrightness(int brightness) {
         int safeValue = Math.max(0, Math.min(255, brightness));
-        device.write8(REG_BRIGHTNESS, safeValue);
     }
 
     public void on() {
         setBrightness(255);
     }
 
-    public void off() {
-        setBrightness(0);
-    }
+//    public void off() {
+//        setBrightness(0);
+//    }
 
     public void update() {
         double now = System.currentTimeMillis() / 1000.0;
