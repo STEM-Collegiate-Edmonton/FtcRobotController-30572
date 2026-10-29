@@ -1,8 +1,12 @@
 package org.firstinspires.ftc.teamcode.example_code;
 
+import static com.qualcomm.hardware.bosch.BNO055Util.write8;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynchSimple;
+
 import org.firstinspires.ftc.teamcode.Prism.GoBildaPrismDriver;
 
 public class underglow {
@@ -18,13 +22,14 @@ public class underglow {
     private int patternIndex = 0;
     private double lastUpdate = 0.0;
     private static final double UPDATE_INTERVAL_SECONDS = 0.15; // 150 ms
+    private I2cDeviceSynchSimple regMode;
 
     public underglow(HardwareMap hardwareMap) {
         prism = hardwareMap.get(GoBildaPrismDriver.class, "prism");
 
-//        // Set a default state
-//        setMode(1);
-//        setBrightness(0);
+        // Set a default state
+        setMode(1);
+        setBrightness(0);
     }
 
     public void setBrightness(int brightness) {
@@ -35,9 +40,13 @@ public class underglow {
         setBrightness(255);
     }
 
-//    public void off() {
-//        setBrightness(0);
-//    }
+    public void setMode(int mode) {
+        //prism.write8(regMode, mode & 0xFF);
+    }
+
+    public void off() {
+        setBrightness(0);
+    }
 
     public void update() {
         double now = System.currentTimeMillis() / 1000.0;
