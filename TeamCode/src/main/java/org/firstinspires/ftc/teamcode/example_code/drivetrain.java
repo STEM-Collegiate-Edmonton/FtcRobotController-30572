@@ -2,18 +2,28 @@ package org.firstinspires.ftc.teamcode.example_code;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class drivetrain {
-    private DcMotor frontLeftDrive = null;
-    private DcMotor backLeftDrive = null;
-    private DcMotor frontRightDrive = null;
-    private DcMotor backRightDrive = null;
-    double frontLeftPower;
-    double frontRightPower;
-    double backLeftPower;
-    double backRightPower;
+    private DcMotor frontLeftDrive;
+    private DcMotor backLeftDrive;
+    private DcMotor frontRightDrive;
+    private DcMotor backRightDrive;
+    private IMU imu;
+
+    public drivetrain(HardwareMap hardwareMap) {
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        imu = hardwareMap.get(IMU.class, "imu");
+    }
+
     public void init() {
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -24,17 +34,54 @@ public class drivetrain {
         frontRightDrive.setZeroPowerBehavior(BRAKE);
         backLeftDrive.setZeroPowerBehavior(BRAKE);
         backRightDrive.setZeroPowerBehavior(BRAKE);
+
+        // Change these directions to match how your Control Hub is mounted.
+        imu.initialize(new IMU.Parameters(
+                new RevHubOrientationOnRobot(
+                        RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                        RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+                )
+        ));
+
+        imu.resetYaw();
     }
 
-    public void mecanumDrive(double forward, double strafe, double rotate) {
-        frontLeftPower = forward + strafe + rotate;
-        frontRightPower = forward - strafe - rotate;
-        backLeftPower = forward - strafe + rotate;
-        backRightPower = forward + strafe - rotate;
+    /**
+     * Field-relative mecanum drive.
+     *
+     * @param forward positive moves in the field-forward direction
+     * @param strafe  positive moves to the field's right
+     * @param rotate  positive rotates the robot
+     */
+    public void fieldRelativeDrive(double forward, double strafe, double rotate) {
+        double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
-        double max = Math.max(Math.abs(frontLeftPower), Math.abs(frontRightPower));
-        max = Math.max(max, Math.abs(backLeftPower));
-        max = Math.max(max, Math.abs(backRightPower));
+        // Rotate the field-relative input by the inverse of the robot heading.
+        double robotStrafe = strafe * Math.cos(-heading)
+                - forward * Math.sin(-heading);
+        double robotForward = strafe * Math.sin(-heading)
+                + forward * Math.cos(-heading);
+
+        setMecanumPowers(robotForward, robotStrafe, rotate);
+    }
+
+    /**
+     * Robot-relative drive, if you also want a non-field-centric option.
+     */
+    public void mecanumDrive(double forward, double strafe, double rotate) {
+        setMecanumPowers(forward, strafe, rotate);
+    }
+
+    private void setMecanumPowers(double forward, double strafe, double rotate) {
+        double frontLeftPower = forward + strafe + rotate;
+        double frontRightPower = forward - strafe - rotate;
+        double backLeftPower = forward - strafe + rotate;
+        double backRightPower = forward + strafe - rotate;
+
+        double max = Math.max(
+                Math.max(Math.abs(frontLeftPower), Math.abs(frontRightPower)),
+                Math.max(Math.abs(backLeftPower), Math.abs(backRightPower))
+        );
 
         if (max > 1.0) {
             frontLeftPower /= max;
@@ -43,19 +90,14 @@ public class drivetrain {
             backRightPower /= max;
         }
 
-        /*
-         * Send calculated power to wheels
-         */
         frontLeftDrive.setPower(frontLeftPower);
         frontRightDrive.setPower(frontRightPower);
         backLeftDrive.setPower(backLeftPower);
         backRightDrive.setPower(backRightPower);
     }
 
-    public drivetrain(HardwareMap hardwareMap) {
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+    /** Call this when you want the robot's current direction to count as zero. */
+    public void resetHeading() {
+        imu.resetYaw();
     }
 }

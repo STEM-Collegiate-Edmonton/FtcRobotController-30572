@@ -9,7 +9,7 @@ public class master_teleop extends OpMode {
     intake intake = null;
     launcher launcher = null;
     windmill windmill = null;
-    underglow underglow = null;
+    //underglow underglow = null;
     boolean spin_up;
     @Override
     public void init() {
@@ -17,20 +17,20 @@ public class master_teleop extends OpMode {
         intake = new intake(hardwareMap);
         launcher = new launcher(hardwareMap);
         windmill = new windmill(hardwareMap);
-        underglow = new underglow(hardwareMap);
+        //underglow = new underglow(hardwareMap);
 
         drivetrain.init();
         intake.init();
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Version: 2");
+        telemetry.addLine("Version: 3");
         telemetry.update();
     }
 
     @Override
     public void loop(){
-        underglow.update();
+        //underglow.update();
         telemetry.addLine("TeleOp active");
         telemetry.addData("Axial", -gamepad1.left_stick_y);
         telemetry.addData("Lateral", gamepad1.left_stick_x);
@@ -40,6 +40,9 @@ public class master_teleop extends OpMode {
         intake.set_power(gamepad1.left_trigger - gamepad1.right_trigger);
         spin_up = gamepad1.b;
         telemetry.addLine("\nLauncher Data");
+        if (gamepad1.x) {
+            drivetrain.resetHeading();
+        }
         if (gamepad1.a && launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
             telemetry.addLine("FIRING");
             windmill.set_power(-1);
