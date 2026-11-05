@@ -49,6 +49,7 @@ public class master_teleop extends OpMode {
 //        } else {
 //            windmill.set_power(0);
 //            }
+
         if (spin_up) {
             launcher.spin(true);
             if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {

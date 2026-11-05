@@ -3,20 +3,25 @@ package org.firstinspires.ftc.teamcode.example_code;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class windmill {
-    private CRServo windmillServo = null;
+    private Servo windmillServo = null;
 
     public void init() {
-        windmillServo.setPower(0);
-        windmillServo.setDirection(DcMotorSimple.Direction.REVERSE);
+        windmillServo.setPosition(0);
+        windmillServo.setDirection(Servo.Direction.REVERSE);
     }
 
-    public void set_power(double power) {
-        windmillServo.setPower(power);
+    public void rotate(int direction) {
+        windmillServo.setPosition(windmillServo.getPosition() + (90 * direction));
+    }
+
+    public void set_angle(double angle) {
+        windmillServo.setPosition(angle);
     }
 
     public windmill(HardwareMap hardwareMap) {
-        windmillServo = hardwareMap.get(CRServo.class, "windmillServo");
+        windmillServo = hardwareMap.get(Servo.class, "windmillServo");
     }
 }
