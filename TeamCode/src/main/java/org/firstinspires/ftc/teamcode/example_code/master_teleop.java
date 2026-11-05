@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.example_code;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "example teleop", group = "example")
 public class master_teleop extends OpMode {
@@ -43,6 +44,11 @@ public class master_teleop extends OpMode {
         if (gamepad1.xWasPressed() && gamepad1.left_bumper) {
             drivetrain.resetHeading();
         }
+        if (gamepad1.dpad_up) {
+            windmill.rotate();
+        } else if (gamepad1.dpadDownWasReleased()) {
+            windmill.set_angle(0);
+        }
 //        if (gamepad1.dpad_up && launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
 //            telemetry.addLine("FIRING");
 //            windmill.set_power(-1);
@@ -53,17 +59,20 @@ public class master_teleop extends OpMode {
         if (spin_up) {
             launcher.spin(true);
             if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
+                ElapsedTime rotateTimer = new ElapsedTime();
+                if (rotateTimer.time() > 999) {
+                    rotateTimer.reset();
+                    windmill.rotate();
+                }
                 telemetry.addData("Status", "FIRING");
-                windmill.set_power(-1);
             } else if (launcher.get_velocity() < launcher.LAUNCHER_MIN_VELOCITY) {
                 telemetry.addData("Status", "STANDBY");
-                windmill.set_power(0);
             } else {
                 telemetry.addData("Status", "ACCELERATING");
-                windmill.set_power(0);
             }
         } else {
             launcher.spin(false);
+            windmill.set_angle(0);
             if (launcher.get_velocity() <= 5) {
                 telemetry.addData("Status", "STATIONARY");
             } else {

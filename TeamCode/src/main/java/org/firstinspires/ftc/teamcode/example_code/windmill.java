@@ -7,14 +7,19 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class windmill {
     private Servo windmillServo = null;
+    private int rotate_stage = 0;
 
     public void init() {
         windmillServo.setPosition(0);
         windmillServo.setDirection(Servo.Direction.REVERSE);
     }
 
-    public void rotate(int direction) {
-        windmillServo.setPosition(windmillServo.getPosition() + (90 * direction));
+    public void rotate() {
+        rotate_stage += 1;
+        if (rotate_stage  == 5) {
+            rotate_stage = 0;
+        }
+        windmillServo.setPosition(rotate_stage * 90);
     }
 
     public void set_angle(double angle) {
