@@ -24,7 +24,7 @@ public class master_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Version: 3");
+        telemetry.addLine("Version: 5");
         telemetry.update();
     }
 
@@ -36,11 +36,11 @@ public class master_teleop extends OpMode {
         telemetry.addData("Lateral", gamepad1.left_stick_x);
         telemetry.addData("Yaw", gamepad1.right_stick_x);
         telemetry.addData("Intake", gamepad1.left_trigger - gamepad1.right_trigger);
-        drivetrain.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        drivetrain.fieldRelativeDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
         intake.set_power(gamepad1.left_trigger - gamepad1.right_trigger);
         spin_up = gamepad1.b;
         telemetry.addLine("\nLauncher Data");
-        if (gamepad1.x) {
+        if (gamepad1.xWasPressed()) {
             drivetrain.resetHeading();
         }
         if (gamepad1.a && launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
