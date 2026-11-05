@@ -24,7 +24,7 @@ public class master_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Version: 5");
+        telemetry.addLine("Version: 6");
         telemetry.update();
     }
 
@@ -40,25 +40,26 @@ public class master_teleop extends OpMode {
         intake.set_power(gamepad1.left_trigger - gamepad1.right_trigger);
         spin_up = gamepad1.b;
         telemetry.addLine("\nLauncher Data");
-        if (gamepad1.xWasPressed()) {
+        if (gamepad1.xWasPressed() && gamepad1.left_bumper) {
             drivetrain.resetHeading();
         }
-        if (gamepad1.a && launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
-            telemetry.addLine("FIRING");
-            windmill.set_power(-1);
-        } else {
-            windmill.set_power(0);
-            }
+//        if (gamepad1.dpad_up && launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
+//            telemetry.addLine("FIRING");
+//            windmill.set_power(-1);
+//        } else {
+//            windmill.set_power(0);
+//            }
         if (spin_up) {
             launcher.spin(true);
             if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
-                if (gamepad1.a) {
-                    telemetry.addData("Status", "FIRING");
-                } else {
-                    telemetry.addData("Status", "STANDBY");
-                }
+                telemetry.addData("Status", "FIRING");
+                windmill.set_power(-1);
+            } else if (launcher.get_velocity() < launcher.LAUNCHER_MIN_VELOCITY) {
+                telemetry.addData("Status", "STANDBY");
+                windmill.set_power(0);
             } else {
                 telemetry.addData("Status", "ACCELERATING");
+                windmill.set_power(0);
             }
         } else {
             launcher.spin(false);
