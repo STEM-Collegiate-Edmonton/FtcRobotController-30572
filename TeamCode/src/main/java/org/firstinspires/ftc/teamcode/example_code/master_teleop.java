@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.example_code;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -25,7 +27,7 @@ public class master_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Version: 6");
+        telemetry.addLine("Version: 7");
         telemetry.update();
     }
 
@@ -65,6 +67,15 @@ public class master_teleop extends OpMode {
                     windmill.rotate();
                 }
                 telemetry.addData("Status", "FIRING");
+<<<<<<< Updated upstream
+=======
+                while (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
+                    windmill.set_power(-1);
+                    //need a pause
+                    windmill.set_power(0);
+                    //need a pause
+                }
+>>>>>>> Stashed changes
             } else if (launcher.get_velocity() < launcher.LAUNCHER_MIN_VELOCITY) {
                 telemetry.addData("Status", "STANDBY");
             } else {
