@@ -27,7 +27,7 @@ public class master_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Version: 7");
+        telemetry.addLine("Version: 8");
         telemetry.update();
     }
 
@@ -49,7 +49,7 @@ public class master_teleop extends OpMode {
         if (gamepad1.dpad_up) {
             windmill.rotate();
         } else if (gamepad1.dpadDownWasReleased()) {
-            windmill.set_angle(0);
+
         }
 //        if (gamepad1.dpad_up && launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
 //            telemetry.addLine("FIRING");
@@ -67,15 +67,10 @@ public class master_teleop extends OpMode {
                     windmill.rotate();
                 }
                 telemetry.addData("Status", "FIRING");
-<<<<<<< Updated upstream
-=======
+
                 while (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
-                    windmill.set_power(-1);
-                    //need a pause
-                    windmill.set_power(0);
-                    //need a pause
+
                 }
->>>>>>> Stashed changes
             } else if (launcher.get_velocity() < launcher.LAUNCHER_MIN_VELOCITY) {
                 telemetry.addData("Status", "STANDBY");
             } else {
@@ -83,7 +78,7 @@ public class master_teleop extends OpMode {
             }
         } else {
             launcher.spin(false);
-            windmill.set_angle(0);
+
             if (launcher.get_velocity() <= 5) {
                 telemetry.addData("Status", "STATIONARY");
             } else {
