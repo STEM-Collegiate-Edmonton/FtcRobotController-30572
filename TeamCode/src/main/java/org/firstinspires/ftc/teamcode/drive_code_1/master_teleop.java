@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive_code_1;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "teleop 1", group = "drive1")
 public class master_teleop extends OpMode {
@@ -12,6 +13,7 @@ public class master_teleop extends OpMode {
     //underglow underglow = null;
     boolean spin_up;
     boolean field_relative = true;
+    ElapsedTime inputTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
     @Override
     public void init() {
         drivetrain = new drivetrain(hardwareMap);
@@ -25,24 +27,8 @@ public class master_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Teleop V1.2");
+        telemetry.addLine("Teleop V1.2.1");
         telemetry.update();
-    }
-
-    @Override
-    public void start() {
-        telemetry.addLine("TELEOP SUSPENDED");
-        telemetry.addLine("A - Field Relative Drive");
-        telemetry.addLine("B - Robot Relative Drive");
-        telemetry.update();
-        while (true) {
-            if (gamepad1.a) {
-                break;
-            } else if (gamepad1.b) {
-                field_relative = false;
-                break;
-            }
-        }
     }
 
     @Override
@@ -68,6 +54,9 @@ public class master_teleop extends OpMode {
         telemetry.addLine("\nLauncher Data");
         if (gamepad1.xWasPressed() && gamepad1.left_bumper) {
             drivetrain.resetHeading();
+        } else if (gamepad1.xWasPressed() && gamepad1.right_bumper && inputTimer.time() > 500) {
+            inputTimer.reset();
+            field_relative = !field_relative;
         }
         if (gamepad1.dpad_up) {
             windmill.set_power(-1);
