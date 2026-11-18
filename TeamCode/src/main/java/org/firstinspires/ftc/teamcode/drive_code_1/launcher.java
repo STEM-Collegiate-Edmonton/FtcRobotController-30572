@@ -1,13 +1,12 @@
-package org.firstinspires.ftc.teamcode.example_code;
+package org.firstinspires.ftc.teamcode.drive_code_1;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 public class launcher {
-    public final int LAUNCHER_TARGET_VELOCITY = 1250; //2678 RPM
-    public final int LAUNCHER_MIN_VELOCITY = 1200; //2571 RPM
+    public final int LAUNCHER_TARGET_VELOCITY = 1175; //2678 RPM
+    public final int LAUNCHER_MIN_VELOCITY = 1150; //2571 RPM
 
     private DcMotorEx launcher = null;
 

@@ -1,10 +1,8 @@
-package org.firstinspires.ftc.teamcode.example_code;
+package org.firstinspires.ftc.teamcode.drive_code_1;
 
 import static com.qualcomm.hardware.bosch.BNO055Util.write8;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.I2cAddr;
-import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynchSimple;
 
 import org.firstinspires.ftc.teamcode.Prism.GoBildaPrismDriver;

@@ -1,12 +1,9 @@
-package org.firstinspires.ftc.teamcode.example_code;
-
-import com.qualcomm.robotcore.util.ElapsedTime;
+package org.firstinspires.ftc.teamcode.drive_code_1;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "example teleop", group = "example")
+@TeleOp(name = "teleop 1", group = "drive1")
 public class master_teleop extends OpMode {
     drivetrain drivetrain = null;
     intake intake = null;
@@ -27,7 +24,7 @@ public class master_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Version: 8");
+        telemetry.addLine("Teleop V1.1");
         telemetry.update();
     }
 
@@ -47,6 +44,8 @@ public class master_teleop extends OpMode {
             drivetrain.resetHeading();
         }
         if (gamepad1.dpad_up) {
+            windmill.set_power(-1);
+        } else if (gamepad1.dpad_down) {
             windmill.set_power(1);
         } else {
             windmill.set_power(0);
@@ -55,7 +54,7 @@ public class master_teleop extends OpMode {
         if (spin_up) {
             launcher.spin(true);
             if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
-                windmill.set_power(1);
+                windmill.set_power(-1);
                 telemetry.addData("Status", "FIRING");
             } else {
                 telemetry.addData("Status", "ACCELERATING");
