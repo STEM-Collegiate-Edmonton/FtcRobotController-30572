@@ -12,15 +12,7 @@ public class windmill {
         windmillServo.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void rotate() {
-        windmillServo.setPower(1);
-    }
-
     public void set_power(double power) {
-        windmillServo.setPower(power);
-    }
-
-    public void set_power(int power) {
         windmillServo.setPower(power);
     }
 
