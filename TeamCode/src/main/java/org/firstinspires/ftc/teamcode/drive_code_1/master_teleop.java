@@ -11,6 +11,7 @@ public class master_teleop extends OpMode {
     windmill windmill = null;
     //underglow underglow = null;
     boolean spin_up;
+    boolean field_relative = true;
     @Override
     public void init() {
         drivetrain = new drivetrain(hardwareMap);
@@ -24,19 +25,44 @@ public class master_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Teleop V1.1");
+        telemetry.addLine("Teleop V1.2");
         telemetry.update();
+    }
+
+    @Override
+    public void start() {
+        telemetry.addLine("TELEOP SUSPENDED");
+        telemetry.addLine("A - Field Relative Drive");
+        telemetry.addLine("B - Robot Relative Drive");
+        telemetry.update();
+        while (true) {
+            if (gamepad1.a) {
+                break;
+            } else if (gamepad1.b) {
+                field_relative = false;
+                break;
+            }
+        }
     }
 
     @Override
     public void loop(){
         //underglow.update();
         telemetry.addLine("TeleOp active");
+        if (field_relative) {
+            telemetry.addLine("Field relative drive");
+        } else {
+            telemetry.addLine("Robot relative drive");
+        }
         telemetry.addData("Axial", -gamepad1.left_stick_y);
         telemetry.addData("Lateral", gamepad1.left_stick_x);
         telemetry.addData("Yaw", gamepad1.right_stick_x);
         telemetry.addData("Intake", gamepad1.left_trigger - gamepad1.right_trigger);
-        drivetrain.fieldRelativeDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        if (field_relative) {
+            drivetrain.fieldRelativeDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        } else {
+            drivetrain.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        }
         intake.set_power(gamepad1.left_trigger - gamepad1.right_trigger);
         spin_up = gamepad1.b;
         telemetry.addLine("\nLauncher Data");
