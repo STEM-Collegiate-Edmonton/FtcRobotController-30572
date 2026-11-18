@@ -33,5 +33,6 @@ public class launcher {
 
     public launcher(HardwareMap hardwareMap) {
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
+        launcher.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     }
 }

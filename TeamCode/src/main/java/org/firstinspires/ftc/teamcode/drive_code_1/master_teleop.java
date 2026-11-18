@@ -27,8 +27,9 @@ public class master_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Teleop V1.2.1");
+        telemetry.addLine("Teleop V1.2.4");
         telemetry.update();
+        inputTimer.reset();
     }
 
     @Override
@@ -54,10 +55,12 @@ public class master_teleop extends OpMode {
         telemetry.addLine("\nLauncher Data");
         if (gamepad1.xWasPressed() && gamepad1.left_bumper) {
             drivetrain.resetHeading();
-        } else if (gamepad1.xWasPressed() && gamepad1.right_bumper && inputTimer.time() > 500) {
+        }
+        if (gamepad1.xWasPressed() && gamepad1.right_bumper && !gamepad1.left_bumper && inputTimer.time() > 500) {
             inputTimer.reset();
             field_relative = !field_relative;
         }
+        telemetry.addData("input timer", inputTimer.time());
         if (gamepad1.dpad_up) {
             windmill.set_power(-1);
         } else if (gamepad1.dpad_down) {
