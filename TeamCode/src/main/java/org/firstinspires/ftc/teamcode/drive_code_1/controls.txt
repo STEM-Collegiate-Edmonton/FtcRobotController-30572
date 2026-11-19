@@ -19,5 +19,5 @@ Dpad Up/Down - Manual windmill control
 
 == Two drivers ==
 
-Driver 1 - Drive and intake
-Driver 2 - Launch, manual windmill control, and field relative control
+Driver 1 - Drive, field relative control, and intake
+Driver 2 - Launch and manual windmill control
