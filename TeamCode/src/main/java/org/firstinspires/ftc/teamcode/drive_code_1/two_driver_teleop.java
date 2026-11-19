@@ -1,0 +1,93 @@
+package org.firstinspires.ftc.teamcode.drive_code_1;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+@TeleOp(name = "two driver teleop", group = "drive1")
+public class two_driver_teleop extends OpMode {
+    drivetrain drivetrain = null;
+    intake intake = null;
+    launcher launcher = null;
+    windmill windmill = null;
+    //underglow underglow = null;
+    boolean spin_up;
+    boolean field_relative = true;
+    ElapsedTime inputTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+    @Override
+    public void init() {
+        drivetrain = new drivetrain(hardwareMap);
+        intake = new intake(hardwareMap);
+        launcher = new launcher(hardwareMap);
+        windmill = new windmill(hardwareMap);
+        //underglow = new underglow(hardwareMap);
+
+        drivetrain.init();
+        intake.init();
+        launcher.init();
+        windmill.init();
+        telemetry.addLine("Initialized");
+        telemetry.addLine("Teleop V1.2.4");
+        telemetry.update();
+        inputTimer.reset();
+    }
+
+    @Override
+    public void loop(){
+        //underglow.update();
+        telemetry.addLine("TeleOp active");
+        if (field_relative) {
+            telemetry.addLine("Field relative drive");
+        } else {
+            telemetry.addLine("Robot relative drive");
+        }
+        telemetry.addData("Axial", -gamepad1.left_stick_y);
+        telemetry.addData("Lateral", gamepad1.left_stick_x);
+        telemetry.addData("Yaw", gamepad1.right_stick_x);
+        telemetry.addData("Intake", gamepad1.left_trigger - gamepad1.right_trigger);
+        if (field_relative) {
+            drivetrain.fieldRelativeDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        } else {
+            drivetrain.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
+        }
+        intake.set_power(gamepad1.left_trigger - gamepad1.right_trigger);
+        spin_up = gamepad2.b;
+        telemetry.addLine("\nLauncher Data");
+        if (gamepad1.xWasPressed() && gamepad1.left_bumper) {
+            drivetrain.resetHeading();
+        }
+        if (gamepad1.xWasPressed() && gamepad1.right_bumper && !gamepad1.left_bumper && inputTimer.time() > 500) {
+            inputTimer.reset();
+            field_relative = !field_relative;
+        }
+        telemetry.addData("input timer", inputTimer.time());
+        if (gamepad2.dpad_up) {
+            windmill.set_power(-1);
+        } else if (gamepad2.dpad_down) {
+            windmill.set_power(1);
+        } else {
+            windmill.set_power(0);
+        }
+
+        if (spin_up) {
+            launcher.spin(true);
+            if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
+                windmill.set_power(-1);
+                telemetry.addData("Status", "FIRING");
+            } else {
+                telemetry.addData("Status", "ACCELERATING");
+                windmill.set_power(0);
+            }
+        } else {
+            launcher.spin(false);
+            windmill.set_power(0);
+            if (launcher.get_velocity() <= 5) {
+                telemetry.addData("Status", "STATIONARY");
+            } else {
+                telemetry.addData("Status", "DECELERATING");
+            }
+        }
+        telemetry.addData("Velocity", launcher.get_velocity());
+        telemetry.update();
+    }
+}
