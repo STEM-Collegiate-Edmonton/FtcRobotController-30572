@@ -27,7 +27,7 @@ public class two_driver_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Two Driver Teleop V1.2.4");
+        telemetry.addLine("Two Driver Teleop V1.2.5");
         telemetry.update();
         inputTimer.reset();
     }
@@ -56,11 +56,10 @@ public class two_driver_teleop extends OpMode {
         if (gamepad1.xWasPressed() && gamepad1.left_bumper) {
             drivetrain.resetHeading();
         }
-        if (gamepad1.xWasPressed() && gamepad1.right_bumper && !gamepad1.left_bumper && inputTimer.time() > 500) {
+        if (gamepad1.y && gamepad1.right_bumper && !gamepad1.left_bumper && inputTimer.time() > 500) {
             inputTimer.reset();
             field_relative = !field_relative;
         }
-        telemetry.addData("input timer", inputTimer.time());
         if (gamepad2.dpad_up) {
             windmill.set_power(-1);
         } else if (gamepad2.dpad_down) {
