@@ -1,0 +1,23 @@
+Team 30572 Teleop V1 controls
+
+== Single driver ==
+
+Left Stick X  - Strafe (Lateral)
+Left Stick Y  - Forward (Axial)
+Right Stick X - Rotate (Heading)
+
+Left Trigger  - Intake reverse
+Right Trigger - Intake forward
+
+Hold B - Autolaunch
+
+Right Bumper + X - Toggle field relative drive
+Left Bumper + X  - Reset IMU (for field relative)
+
+Dpad Up/Down - Manual windmill control
+
+
+== Two drivers ==
+
+Driver 1 - Drive and intake
+Driver 2 - Launch, manual windmill control, and field relative control
