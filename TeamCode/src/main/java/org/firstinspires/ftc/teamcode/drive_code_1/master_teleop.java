@@ -27,7 +27,7 @@ public class master_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Teleop V1.2.5");
+        telemetry.addLine("Teleop V1.3.0");
         telemetry.update();
         inputTimer.reset();
     }

@@ -27,7 +27,7 @@ public class two_driver_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Two Driver Teleop V1.2.5");
+        telemetry.addLine("Two Driver Teleop V1.3.0");
         telemetry.update();
         inputTimer.reset();
     }
