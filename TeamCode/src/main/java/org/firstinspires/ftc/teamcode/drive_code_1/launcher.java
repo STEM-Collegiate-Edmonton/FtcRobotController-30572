@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class launcher {
-    public final int LAUNCHER_TARGET_VELOCITY = 1175; //2678 RPM
-    public final int LAUNCHER_MIN_VELOCITY = 1150; //2571 RPM
+    public int LAUNCHER_TARGET_VELOCITY = 1200; //2678 RPM
+    public int LAUNCHER_MIN_VELOCITY = 1150; //2571 RPM
 
     private DcMotorEx launcher = null;
 
@@ -29,6 +29,11 @@ public class launcher {
 
     public double get_velocity() {
         return (launcher.getVelocity());
+    }
+
+    public void set_target(int targ, int min) {
+        LAUNCHER_TARGET_VELOCITY = targ;
+        LAUNCHER_MIN_VELOCITY = min;
     }
 
     public launcher(HardwareMap hardwareMap) {

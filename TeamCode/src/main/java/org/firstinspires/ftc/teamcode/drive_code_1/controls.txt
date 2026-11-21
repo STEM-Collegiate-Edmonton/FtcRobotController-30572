@@ -19,5 +19,22 @@ Dpad Up/Down - Manual windmill control
 
 == Two drivers ==
 
-Driver 1 - Drive, field relative control, and intake
-Driver 2 - Launch and manual windmill control
+-- Driver 1 (Drive) --
+
+Left Stick X  - Strafe (Lateral)
+Left Stick Y  - Forward (Axial)
+Right Stick X - Rotate (Heading)
+
+Left Trigger  - Intake reverse
+Right Trigger - Intake forward
+
+Right Bumper + X - Toggle field relative drive
+Left Bumper + X  - Reset IMU (for field relative)
+
+-- Driver 2 (Shooter) --
+
+Hold B - Autolaunch
+
+Dpad Up/Down - Manual windmill control
+Dpad Left    - Target velocity decrease (increments
+Dpad Right   - Target velocity increase  by 50)
