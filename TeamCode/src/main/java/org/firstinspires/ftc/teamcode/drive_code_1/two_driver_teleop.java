@@ -27,7 +27,7 @@ public class two_driver_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Two Driver Teleop V1.4.0");
+        telemetry.addLine("Two Driver Teleop V1.5.0");
         telemetry.update();
         inputTimer.reset();
     }
@@ -73,8 +73,9 @@ public class two_driver_teleop extends OpMode {
             launcher.set_target(launcher.LAUNCHER_TARGET_VELOCITY + 50, launcher.LAUNCHER_MIN_VELOCITY + 50);
         }
 
+        launcher.spin(gamepad2.y || spin_up);
+
         if (spin_up) {
-            launcher.spin(true);
             if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
                 windmill.set_power(-1);
                 telemetry.addData("Status", "FIRING");
@@ -83,14 +84,22 @@ public class two_driver_teleop extends OpMode {
                 windmill.set_power(0);
             }
         } else {
-            launcher.spin(false);
             windmill.set_power(0);
-            if (launcher.get_velocity() <= 5) {
-                telemetry.addData("Status", "STATIONARY");
+            if (gamepad2.y) {
+                if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
+                    telemetry.addData("Status", "STANDBY");
+                } else {
+                    telemetry.addData("Status", "ACCELERATING");
+                }
             } else {
-                telemetry.addData("Status", "DECELERATING");
+                if (launcher.get_velocity() <= 5) {
+                    telemetry.addData("Status", "STATIONARY");
+                } else {
+                    telemetry.addData("Status", "DECELERATING");
+                }
             }
         }
+
         telemetry.addData("Target", launcher.LAUNCHER_TARGET_VELOCITY);
         telemetry.addData("Velocity", launcher.get_velocity());
         telemetry.update();

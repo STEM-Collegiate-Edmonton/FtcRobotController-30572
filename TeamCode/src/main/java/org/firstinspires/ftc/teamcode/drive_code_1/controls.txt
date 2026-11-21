@@ -10,11 +10,14 @@ Left Trigger  - Intake reverse
 Right Trigger - Intake forward
 
 Hold B - Autolaunch
+Hold Y - Spin up flywheel
 
 Right Bumper + X - Toggle field relative drive
 Left Bumper + X  - Reset IMU (for field relative)
 
 Dpad Up/Down - Manual windmill control
+Dpad Left    - Target velocity decrease (increments
+Dpad Right   - Target velocity increase  by 50)
 
 
 == Two drivers ==
@@ -34,6 +37,7 @@ Left Bumper + X  - Reset IMU (for field relative)
 -- Driver 2 (Shooter) --
 
 Hold B - Autolaunch
+Hold Y - Spin up flywheel
 
 Dpad Up/Down - Manual windmill control
 Dpad Left    - Target velocity decrease (increments
