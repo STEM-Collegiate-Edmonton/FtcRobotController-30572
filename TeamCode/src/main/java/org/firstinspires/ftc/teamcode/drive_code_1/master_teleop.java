@@ -11,8 +11,9 @@ public class master_teleop extends OpMode {
     launcher launcher = null;
     windmill windmill = null;
     //underglow underglow = null;
-    boolean spin_up;
+    boolean fire;
     boolean field_relative = true;
+    boolean spin_up = false;
     ElapsedTime inputTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
     @Override
     public void init() {
@@ -27,7 +28,7 @@ public class master_teleop extends OpMode {
         launcher.init();
         windmill.init();
         telemetry.addLine("Initialized");
-        telemetry.addLine("Teleop V1.5.0");
+        telemetry.addLine("Teleop V1.5.2");
         telemetry.update();
         inputTimer.reset();
     }
@@ -51,7 +52,7 @@ public class master_teleop extends OpMode {
             drivetrain.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, -gamepad1.right_stick_x);
         }
         intake.set_power(gamepad1.left_trigger - gamepad1.right_trigger);
-        spin_up = gamepad1.b;
+        fire = gamepad1.b;
         telemetry.addLine("\nLauncher Data");
         if (gamepad1.xWasPressed() && gamepad1.left_bumper) {
             drivetrain.resetHeading();
@@ -68,15 +69,18 @@ public class master_teleop extends OpMode {
             windmill.set_power(0);
         }
         if (gamepad1.dpadLeftWasPressed()) {
-            launcher.set_target(launcher.LAUNCHER_TARGET_VELOCITY - 50, launcher.LAUNCHER_MIN_VELOCITY - 50);
+            launcher.set_target(launcher.LAUNCHER_TARGET_VELOCITY - 50, launcher.LAUNCHER_MIN_VELOCITY - 50, launcher.LAUNCHER_MAX_VELOCITY - 50);
         } else if (gamepad1.dpadRightWasPressed()) {
-            launcher.set_target(launcher.LAUNCHER_TARGET_VELOCITY + 50, launcher.LAUNCHER_MIN_VELOCITY + 50);
+            launcher.set_target(launcher.LAUNCHER_TARGET_VELOCITY + 50, launcher.LAUNCHER_MIN_VELOCITY + 50, launcher.LAUNCHER_MAX_VELOCITY + 50);
         }
 
-        launcher.spin(gamepad1.y || spin_up);
+        if (gamepad1.yWasPressed()) {
+            spin_up = !spin_up;
+        }
+        launcher.spin(spin_up || fire);
 
-        if (spin_up) {
-            if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
+        if (fire) {
+            if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY && launcher.get_velocity() < launcher.LAUNCHER_MAX_VELOCITY) {
                 windmill.set_power(-1);
                 telemetry.addData("Status", "FIRING");
             } else {
@@ -85,8 +89,8 @@ public class master_teleop extends OpMode {
             }
         } else {
             windmill.set_power(0);
-            if (gamepad1.y) {
-                if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY) {
+            if (spin_up) {
+                if (launcher.get_velocity() > launcher.LAUNCHER_MIN_VELOCITY && launcher.get_velocity() < launcher.LAUNCHER_MAX_VELOCITY) {
                     telemetry.addData("Status", "STANDBY");
                 } else {
                     telemetry.addData("Status", "ACCELERATING");
